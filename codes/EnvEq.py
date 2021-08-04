@@ -171,7 +171,7 @@ def enveq(x, t, p, mu, lam, r, K, delta, rho, K_m, lim, D, M):
 
     return dx
   
-def ovr(cells, i, k_m, M): #Calculates overflow of cells and shuffles them around accordingly
+def ovr(cells, i, k_m, M):
 
     ovrflw = - max(cells[i] - k_m, 0)
     if i == 0:
@@ -179,5 +179,11 @@ def ovr(cells, i, k_m, M): #Calculates overflow of cells and shuffles them aroun
     if i == M-1:
         ovrflw += max( (cells[i - 1] - k_m)/2, 0)
     if 0 < i < M-1:
-        ovrflw += max( (cells[i - 1] - k_m)/2, 0) + max( (cells[i + 1] - k_m)/2, 0) 
-    return ovrflw   
+        if i == 1:
+            ovrflw += max( cells[i - 1] - k_m, 0) + max( (cells[i + 1] - k_m)/2, 0)
+        if i == M-2:
+            ovrflw += max( (cells[i - 1] - k_m)/2, 0) + max(cells[i + 1] - k_m, 0)
+        else:    
+            ovrflw += max( (cells[i - 1] - k_m)/2, 0) + max( (cells[i + 1] - k_m)/2, 0) 
+    return ovrflw
+ 
